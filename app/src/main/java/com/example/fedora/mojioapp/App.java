@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 
 import io.moj.java.sdk.MojioClient;
 import io.moj.java.sdk.MojioEnvironment;
-import io.moj.java.sdk.model.Trip;
 
 import java.util.List;
 
@@ -18,7 +17,8 @@ public class App extends Application {
     private MojioClient mojioClient;
     private Gson gson;
     private boolean loggedIn;
-    private List<Trip> trips;
+    private List<RecyclerListItem> tripList;
+
 
     @Override
     public void onCreate() {
@@ -49,13 +49,11 @@ public class App extends Application {
         loggedIn = status;
     }
 
-    public List<Trip> getTrips() {
-        return trips;
+    public List<RecyclerListItem> getTripList() {
+        return tripList;
     }
 
-    public void setTrips(List<Trip> trips) {
-        this.trips = trips;
+    public void setTripList(List<RecyclerListItem> dataList) {
+        this.tripList = dataList;
     }
-
-
 }

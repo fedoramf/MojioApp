@@ -20,13 +20,13 @@ import java.util.List;
  */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
 
-    private List<Trip> tripList;
+    private List<RecyclerListItem> tripList;
     private Context context;
     private View listItemView, container;
     private ViewHolder viewHolder;
     private ItemClickCallback itemClickCallback;
 
-    public RecyclerAdapter(Context context1, List<Trip> SubjectValues){
+    public RecyclerAdapter(Context context1, List<RecyclerListItem> SubjectValues){
 
         tripList = SubjectValues;
         context = context1;
@@ -44,9 +44,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
-        holder.dateTV.setText(getDate(position));
-        holder.startLocationTV.setText(tripList.get(position).getStartLocation().getAddress().getFormattedAddress());
-        holder.endLocationTV.setText(tripList.get(position).getEndLocation().getAddress().getFormattedAddress());
+        holder.dateTV.setText(tripList.get(position).getTripDate());
+        holder.startLocationTV.setText(tripList.get(position).getStartLocation());
+        holder.endLocationTV.setText(tripList.get(position).getEndLocation());
     }
 
     @Override
@@ -83,16 +83,4 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             itemClickCallback.onItemClick(getAdapterPosition());
         }
     }
-
-    @TargetApi(24)
-    private String getDate(int position) {
-        DateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy' 'H:mm a");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(tripList.get(position).getEndTimestamp());
-        TimeZone tz = TimeZone.getDefault();
-        sdf.setTimeZone(tz);
-        return sdf.format(calendar.getTime());
-    }
-
 }

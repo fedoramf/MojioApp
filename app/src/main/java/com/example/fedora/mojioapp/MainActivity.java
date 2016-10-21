@@ -19,6 +19,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements RecyclerAdapter.ItemClickCallback{
 
     private static final String TAG = "myApp";
@@ -76,7 +79,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
                             public void onResponse(Call<ListResponse<Trip>> call, Response<ListResponse<Trip>> response) {
                                 if (response.isSuccessful()) {
                                     //save trips to Application activity's list of Trips
-                                    ((App) context).setTrips(response.body().getData());
+                                    extractData(response.body().getData());
+
 
                                     initRecyclerAdapter();
 
@@ -110,9 +114,20 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
             });
     }
 
+    private void extractData(List<Trip> trips) {
+
+        List<RecyclerListItem> data = new ArrayList<>();
+
+        for(int i = 0; i< trips.size(); i++){
+            RecyclerListItem item = new RecyclerListItem(trips.get(i));
+            data.add(item);
+        }
+        ((App) context).setTripList(data);
+    }
+
     private void initRecyclerAdapter() {
         //send trips to adapter
-        recyclerViewAdapter = new RecyclerAdapter(MainActivity.this, ((App) context).getTrips());
+        recyclerViewAdapter = new RecyclerAdapter(MainActivity.this, ((App) context).getTripList());
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerViewAdapter.setItemClickCallback(MainActivity.this);
     }
