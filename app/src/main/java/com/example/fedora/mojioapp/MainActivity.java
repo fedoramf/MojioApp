@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     private static final String TAG = "myApp";
     private static final String EXTRA_COUNT = "EXTRA_QUOTE";
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
+    private static final String LOSS_OF_NETWORK_CONNECTIVITY_TRY_AGAIN = "Loss of network connectivity - try again";
 
     private Context context;
     private RecyclerView recyclerView;
@@ -51,8 +52,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         String loginID = "fedora01";
         String loginPassword = "Test123";
 
-        Log.d(TAG,"Begin");
-
         if(((App) context).getLoginStatus()){
         //logged in
             initRecyclerAdapter();
@@ -65,23 +64,20 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
             final MojioClient mClient = ((App) context).getMojioClient();
 
-            Call<User> loginCall = mClient.login(loginID, loginPassword);
+        Call<User> loginCall = mClient.login(loginID, loginPassword);
             loginCall.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
 
                     if (response.isSuccessful()) {
 
-                        ((App) context).setLoginStatus(true);
-
                         mClient.rest().getTrips().enqueue(new Callback<ListResponse<Trip>>() {
                             @Override
                             public void onResponse(Call<ListResponse<Trip>> call, Response<ListResponse<Trip>> response) {
                                 if (response.isSuccessful()) {
                                     //save trips to Application activity's list of Trips
+                                    ((App) context).setLoginStatus(true);
                                     extractData(response.body().getData());
-
-
                                     initRecyclerAdapter();
 
                                 } else {
@@ -93,7 +89,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
                             @Override
                             public void onFailure(Call<ListResponse<Trip>> call, Throwable t) {
                                 // Handle the error - this is caused by a request failure such as loss of network connectivity
-                                Log.e(TAG, "Request failure" + t.getCause());
+                                Snackbar.make(recyclerView, LOSS_OF_NETWORK_CONNECTIVITY_TRY_AGAIN, Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                                delayedFinish();
                             }
                         });
                     } else {
@@ -107,27 +105,41 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
                     // Handle the error - this is caused by a request failure such as loss of network connectivity
-                    Snackbar.make(recyclerView, "Loss of network connectivity - try again", Snackbar.LENGTH_LONG)
+                    Snackbar.make(recyclerView, LOSS_OF_NETWORK_CONNECTIVITY_TRY_AGAIN, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    MainActivity.this.finish();
+
+                    delayedFinish();
+
                 }
             });
     }
 
+    private void delayedFinish() {
+        this.findViewById(android.R.id.content).postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                MainActivity.this.finish();
+            }
+
+        }, 3000);
+    }
+
     private void extractData(List<Trip> trips) {
 
-        List<RecyclerListItem> data = new ArrayList<>();
+        List<TripListData> data = new ArrayList<>();
 
         for(int i = 0; i< trips.size(); i++){
-            RecyclerListItem item = new RecyclerListItem(trips.get(i));
+            TripListData item = new TripListData(trips.get(i));
             data.add(item);
         }
-        ((App) context).setTripList(data);
+
+        ((App) context).saveTripListData(data);
     }
 
     private void initRecyclerAdapter() {
         //send trips to adapter
-        recyclerViewAdapter = new RecyclerAdapter(MainActivity.this, ((App) context).getTripList());
+        recyclerViewAdapter = new RecyclerAdapter(MainActivity.this, ((App) context).getTripListData());
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerViewAdapter.setItemClickCallback(MainActivity.this);
     }

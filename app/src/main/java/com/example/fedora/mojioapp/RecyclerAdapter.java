@@ -1,32 +1,27 @@
 package com.example.fedora.mojioapp;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
-import android.icu.util.TimeZone;
 import android.support.v7.widget.RecyclerView;
-import android.icu.text.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import io.moj.java.sdk.model.Trip;
 
 import java.util.List;
 
 /**
  * Created by Fedora on 2016-10-18.
  */
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
 
-    private List<RecyclerListItem> tripList;
+    private List<TripListData> tripList;
     private Context context;
     private View listItemView, container;
     private ViewHolder viewHolder;
     private ItemClickCallback itemClickCallback;
 
-    public RecyclerAdapter(Context context1, List<RecyclerListItem> SubjectValues){
+    public RecyclerAdapter(Context context1, List<TripListData> SubjectValues){
 
         tripList = SubjectValues;
         context = context1;

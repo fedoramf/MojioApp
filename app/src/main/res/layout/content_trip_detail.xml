@@ -16,8 +16,8 @@
 
 
     <ImageView
-            android:layout_width="93dp"
-            android:layout_height="93dp"
+            android:layout_width="@dimen/tripdetail_layout_margin"
+            android:layout_height="@dimen/tripdetail_layout_margin"
             android:id="@+id/imageView"
             android:src="@drawable/directions_car_black_"/>
     <TextView
@@ -26,22 +26,22 @@
             android:textColor="@color/color_dark_grey"
             android:text="Max Speed"
             android:id="@+id/maxSpeed"
-            android:layout_below="@+id/maxRPM" android:layout_alignLeft="@+id/maxRPM"
-            android:layout_alignStart="@+id/maxRPM" android:layout_marginTop="8dp"/>
+            android:layout_above="@+id/maxRPM" android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_dark_grey"
             android:text="Max Rpm"
             android:id="@+id/maxRPM"
-            android:layout_alignTop="@+id/imageView" android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView" android:layout_marginTop="12dp"/>
+            android:layout_above="@+id/efficiency" android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_dark_grey"
-            android:text="Duration"
-            android:id="@+id/duration"
-            android:layout_below="@+id/maxSpeed" android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView" android:layout_marginTop="8dp"/>
+            android:text="Fuel Efficiency"
+            android:id="@+id/efficiency"
+            android:layout_alignBottom="@+id/imageView" android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView" android:layout_marginBottom="21dp"/>
 </RelativeLayout>

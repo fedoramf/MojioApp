@@ -13,8 +13,8 @@ public class TripDetailActivity extends AppCompatActivity {
     private static final String EXTRA_COUNT = "EXTRA_QUOTE";
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
 
-    private RecyclerListItem currentTrip;
-    private TextView maxSpeedTV, maxRPMTV, durationTV;
+    private TripListData currentTrip;
+    private TextView maxSpeedTV, maxRPMTV, fefficiencyTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class TripDetailActivity extends AppCompatActivity {
 
         maxSpeedTV = (TextView) findViewById(R.id.maxSpeed);
         maxRPMTV = (TextView) findViewById(R.id.maxRPM);
-        durationTV = (TextView) findViewById(R.id.duration);
+        fefficiencyTV = (TextView) findViewById(R.id.efficiency);
 
         Bundle extras = getIntent().getBundleExtra(BUNDLE_EXTRAS);
 
@@ -39,12 +39,12 @@ public class TripDetailActivity extends AppCompatActivity {
     }
 
     private void setTripDataView() {
-        maxSpeedTV.setText("Max Speed: " + currentTrip.getMaxSpeed() + " KMPH");
-        maxRPMTV.setText("Max RPM: " + currentTrip.getMaxRPM() + " RPM");
-        durationTV.setText("Fuel Efficiency: " + currentTrip.getFuelEfficiency() + " KMPL");
+        maxSpeedTV.setText(currentTrip.getMaxSpeed());
+        maxRPMTV.setText(currentTrip.getMaxRPM());
+        fefficiencyTV.setText(currentTrip.getFuelEfficiency());
     }
 
     private void getTripData(int i) {
-        currentTrip = ((App) getApplicationContext()).getTripList().get(i);
+        currentTrip = ((App) getApplicationContext()).getTripListData().get(i);
     }
 }

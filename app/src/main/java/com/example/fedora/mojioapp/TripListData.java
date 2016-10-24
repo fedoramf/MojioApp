@@ -5,42 +5,43 @@ import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.icu.util.TimeZone;
+
 import io.moj.java.sdk.model.Trip;
 
 /**
  * Created by Fedora on 2016-10-19.
  */
-public class RecyclerListItem { //RENAME TO TRIPLISTDATA
-    private String startLocation, endLocation, tripDate;
-    private int maxSpeed, maxRPM, fuelEfficiency;
 
-    public RecyclerListItem(Trip trip){
+public class TripListData {
+    private String startLocation, endLocation, tripDate, maxSpeed, maxRPM, fuelEfficiency;
+
+    public TripListData(Trip trip){
 
         setTripDate(formatDate(trip.getEndTimestamp()));
         setLocation(trip.getStartLocation().getAddress().getFormattedAddress(), trip.getEndLocation().getAddress().getFormattedAddress());
-        setMaxSpeed(trip.getMaxSpeed().getValue().intValue());
-        setMaxRPM(trip.getMaxRPM().getValue().intValue());
-        setFuelEfficiency(trip.getFuelEfficiency().getValue().intValue());
+        setMaxSpeed("Max Speed : " + trip.getMaxSpeed().getValue().intValue() + " KMPH");
+        setMaxRPM("Max RPM : " + trip.getMaxRPM().getValue().intValue() + " " + trip.getMaxRPM().getRpmUnit().toString());
+        setFuelEfficiency("Fuel Efficiency: " + trip.getFuelEfficiency().getValue().intValue() + " " + trip.getFuelEfficiency().getBaseFuelEfficiencyUnit().toString());
     }
     
-    public void setLocation(String sLocation, String eLocation) {
+    private void setLocation(String sLocation, String eLocation) {
         this.startLocation = sLocation;
         this.endLocation = eLocation;
     }
 
-    public void setTripDate(String date) {
+    private void setTripDate(String date) {
         tripDate = date;
     }
 
-    public void setMaxSpeed(int maxSpeed) {
+    private void setMaxSpeed(String maxSpeed) {
         this.maxSpeed = maxSpeed;
     }
 
-    public void setMaxRPM(int maxRPM) {
+    private void setMaxRPM(String maxRPM) {
         this.maxRPM = maxRPM;
     }
 
-    public void setFuelEfficiency(int fuelEfficiency) {
+    private void setFuelEfficiency(String fuelEfficiency) {
         this.fuelEfficiency = fuelEfficiency;
     }
 
@@ -56,15 +57,15 @@ public class RecyclerListItem { //RENAME TO TRIPLISTDATA
         return tripDate;
     }
 
-    public int getMaxSpeed(){
+    public String getMaxSpeed(){
         return maxSpeed;
     }
 
-    public int getMaxRPM(){
+    public String getMaxRPM(){
         return maxRPM;
     }
 
-    public int getFuelEfficiency(){
+    public String getFuelEfficiency(){
         return fuelEfficiency;
     }
 
